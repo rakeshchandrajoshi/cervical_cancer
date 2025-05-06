@@ -4,6 +4,9 @@ import numpy as np
 from fpdf import FPDF
 import io
 from datetime import datetime
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
 
 # Load model
 MODEL_PATH = "cervicalcancer.pkl"
@@ -34,32 +37,43 @@ translations = {
     }
 }
 
+
+
 def t(text, lang):
     return translations.get(text, {}).get(lang, text)
 
-# PDF generation
+
+
+
+
 def create_pdf(patient_name, prediction_result, details):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
+    buffer = io.BytesIO()
+    c = canvas.Canvas(buffer, pagesize=A4)
+    width, height = A4
 
-    pdf.cell(200, 10, txt="Cervical Cancer Risk Assessment Report", ln=True, align="C")
-    pdf.cell(200, 10, txt=f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", ln=True, align="C")
-    pdf.ln(10)
+    c.setFont("Helvetica-Bold", 14)
+    c.drawCentredString(width / 2, height - 50, "Cervical Cancer Risk Assessment Report")
 
-    pdf.cell(200, 10, txt=f"Patient Name: {patient_name}", ln=True)
-    pdf.cell(200, 10, txt=f"Prediction Result: {'At Risk' if prediction_result == 1 else 'No Risk'}", ln=True)
-    pdf.ln(5)
+    c.setFont("Helvetica", 10)
+    c.drawString(40, height - 80, f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    c.drawString(40, height - 100, f"Patient Name: {patient_name}")
+    c.drawString(40, height - 120, f"Prediction Result: {'At Risk' if prediction_result == 1 else 'No Risk'}")
 
-    pdf.set_font("Arial", "B", size=12)
-    pdf.cell(200, 10, txt="Entered Details:", ln=True)
-    pdf.set_font("Arial", size=12)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(40, height - 150, "Entered Details:")
+
+    y = height - 170
+    c.setFont("Helvetica", 10)
     for key, value in details.items():
-        pdf.cell(200, 10, txt=f"{key}: {value}", ln=True)
+        if y < 50:
+            c.showPage()
+            y = height - 50
+        c.drawString(60, y, f"{key}: {value}")
+        y -= 15
 
-    # Return PDF as BytesIO using dest='S'
-    pdf_bytes = pdf.output(dest='S').encode('latin1')
-    return io.BytesIO(pdf_bytes)
+    c.save()
+    buffer.seek(0)
+    return buffer
 
 # App config
 st.set_page_config(page_title="Cervical Cancer Predictor", page_icon="🏥", layout="wide")
