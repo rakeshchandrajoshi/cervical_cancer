@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 # Load model
-MODEL_PATH = "cervicalcancer.pkl"
+MODEL_PATH = "trained_model.pkl"
 model = joblib.load(MODEL_PATH)
 
 # Page configuration
