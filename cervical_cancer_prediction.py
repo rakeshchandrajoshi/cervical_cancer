@@ -16,7 +16,7 @@ st.markdown("<h1 style='text-align: center; color: darkblue;'>🧬 Cervical Canc
 
 # Image
 if os.path.exists("cervical.jpeg"):
-    st.image("cervical.jpeg", caption="Generated with DALL·E", use_column_width=True)
+    st.image("cervical.jpeg", caption="Generated with DALL·E", use_container_width=True)
 else:
     st.warning("Image file 'cervical.jpeg' not found.")
 
