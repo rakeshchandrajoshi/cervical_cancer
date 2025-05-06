@@ -92,6 +92,7 @@ with tab2:
             Contraception_val, Smoking_val, HRHPV_val, IL6_val, IL1beta_val,
             TNFalpha_val, IL1RN_val
         ]])
+        print(input_data)
 
         result = model.predict(input_data)
 
