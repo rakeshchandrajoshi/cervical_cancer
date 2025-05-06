@@ -12,7 +12,7 @@ st.set_page_config(page_title="Cervical Cancer Predictor", page_icon="🏥", lay
 
 # Title
 st.markdown("<h1 style='text-align: center; color: darkblue;'>🧬 Cervical Cancer Diagnosis Application</h1>", unsafe_allow_html=True)
-st.markdown("<h4 style='text-align: center; color: gray;'>Developed by Amity Centre for Artificial Intelligence, Amity University Noida</h4>", unsafe_allow_html=True)
+#st.markdown("<h4 style='text-align: center; color: gray;'>Developed by Amity Centre for Artificial Intelligence, Amity University Noida</h4>", unsafe_allow_html=True)
 
 # Image
 if os.path.exists("cervical.jpeg"):
