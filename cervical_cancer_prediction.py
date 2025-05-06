@@ -101,10 +101,7 @@ if submitted:
 
 # Reference and Credits
 st.markdown("---")
-st.markdown("**📖 Reference:**")
-st.markdown(
-    """Kaushik M. et al., *Cytokine gene variants and socio-demographic characteristics as predictors of cervical cancer: A machine learning approach*,
-    Computers in Biology and Medicine, 2021. [Read More](https://doi.org/10.1016/j.compbiomed.2021.104559)"""
+
 )
 
 
