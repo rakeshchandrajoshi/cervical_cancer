@@ -100,7 +100,7 @@ with tab2:
 
         if gender_val == 1:
             st.warning("⚠️ This prediction tool is intended for biological females. Your result may be invalid.")
-        elif result[0] == 1:
+        elif result[0] == 0:
             st.error(f"🔬 {patient_display}, you may have a risk of Cervical Cancer.")
             st.markdown("**📍 Suggested Specialists:**")
             st.markdown("- 🔹 [Primary Care Provider](https://www.google.com/search?q=Primary+Care+Provider+near+me)")
