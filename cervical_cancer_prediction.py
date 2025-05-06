@@ -108,5 +108,3 @@ with tab2:
         else:
             st.success(f"✅ {patient_display}, no indication of Cervical Cancer risk was found.")
             st.balloons()
-
-)
