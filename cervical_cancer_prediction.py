@@ -49,8 +49,8 @@ with tab1:
             SES = st.radio("Socio-economic Status", ["Lower", "Middle", "Upper"])
 
         with col2:
-            Parity = st.radio("Parity", ["None", "≤2", "more than 2"])
-            AgefirstP = st.radio("Age at First Full-Term Pregnancy", ["≤20", "more than 20"])
+            Parity = st.radio("Parity", ["None", "≤2", "more_than_2"])
+            AgefirstP = st.radio("Age at First Full-Term Pregnancy", ["≤20", "more_than_20"])
             MC = st.radio("Menstrual Cycle", ["Regular", "Irregular"])
             MH = st.radio("Menstrual Hygiene", ["Napkin", "Cloths"])
             Contraception = st.radio("Use of Contraception", ["Oral contraceptive pills", "Others"])
@@ -72,7 +72,7 @@ with tab2:
         PoR_val = 2 if PoR == "Urban" else 1
         ES_val = 2 if ES == "Literate" else 1
         SES_val = {"Lower": 3, "Middle": 2, "Upper": 1}[SES]
-        Parity_val = {"None": 1, "≤2": 2, "more than 2": 3}[Parity]
+        Parity_val = {"None": 1, "≤2": 2, "more_than_2": 3}[Parity]
         AgefirstP_val = 1 if AgefirstP == "≤20" else 2
         MC_val = 1 if MC == "Regular" else 2
         MH_val = 1 if MH == "Napkin" else 2
