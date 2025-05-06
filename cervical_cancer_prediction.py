@@ -42,21 +42,24 @@ def create_pdf(patient_name, prediction_result, details):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
+
     pdf.cell(200, 10, txt="Cervical Cancer Risk Assessment Report", ln=True, align="C")
     pdf.cell(200, 10, txt=f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", ln=True, align="C")
     pdf.ln(10)
+
     pdf.cell(200, 10, txt=f"Patient Name: {patient_name}", ln=True)
     pdf.cell(200, 10, txt=f"Prediction Result: {'At Risk' if prediction_result == 1 else 'No Risk'}", ln=True)
     pdf.ln(5)
+
     pdf.set_font("Arial", "B", size=12)
     pdf.cell(200, 10, txt="Entered Details:", ln=True)
     pdf.set_font("Arial", size=12)
     for key, value in details.items():
         pdf.cell(200, 10, txt=f"{key}: {value}", ln=True)
-    pdf_output = io.BytesIO()
-    pdf.output(pdf_output)
-    pdf_output.seek(0)
-    return pdf_output
+
+    # Return PDF as BytesIO using dest='S'
+    pdf_bytes = pdf.output(dest='S').encode('latin1')
+    return io.BytesIO(pdf_bytes)
 
 # App config
 st.set_page_config(page_title="Cervical Cancer Predictor", page_icon="🏥", layout="wide")
