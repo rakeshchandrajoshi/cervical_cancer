@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 # Load model and encoders
-MODEL_PATH = "trained_model.pkl"
+MODEL_PATH = "trained_model1.pkl"
 with open(MODEL_PATH, "rb") as f:
     model_data = pickle.load(f)
 
