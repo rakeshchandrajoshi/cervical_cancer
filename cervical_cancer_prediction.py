@@ -49,8 +49,8 @@ with tab1:
             SES = st.radio("Socio-economic Status", ["Lower", "Middle", "Upper"])
 
         with col2:
-            Parity = st.radio("Parity", ["None", "≤2", ">2"])
-            AgefirstP = st.radio("Age at First Full-Term Pregnancy", ["≤20", ">20"])
+            Parity = st.radio("Parity", ["None", "≤2", "more than 2"])
+            AgefirstP = st.radio("Age at First Full-Term Pregnancy", ["≤20", "more than 20"])
             MC = st.radio("Menstrual Cycle", ["Regular", "Irregular"])
             MH = st.radio("Menstrual Hygiene", ["Napkin", "Cloths"])
             Contraception = st.radio("Use of Contraception", ["Oral contraceptive pills", "Others"])
@@ -69,21 +69,21 @@ with tab2:
     if submitted:
         # Encode input
         gender_val = 1 if gender == "Male" else 0
-        PoR_val = 1 if PoR == "Urban" else 0
-        ES_val = 1 if ES == "Literate" else 0
-        SES_val = {"Lower": 0, "Middle": 1, "Upper": 2}[SES]
-        Parity_val = {"None": 0, "≤2": 1, ">2": 2}[Parity]
-        AgefirstP_val = 1 if AgefirstP == ">20" else 0
-        MC_val = 1 if MC == "Regular" else 0
-        MH_val = 1 if MH == "Napkin" else 0
-        Contraception_val = 1 if Contraception == "Others" else 0
-        Smoking_val = 1 if Smoking == "Active" else 0
-        HRHPV_val = 1 if HRHPV == "Positive" else 0
-        IL6_val = {"AG": 1, "AA": 2, "GG": 3}[IL6]
-        IL1beta_val = {"TT": 1, "CT": 2, "CC": 3}[IL1beta]
-        TNFalpha_val = {"GG": 1, "AA": 2, "GA": 3}[TNFalpha]
+        PoR_val = 2 if PoR == "Urban" else 1
+        ES_val = 2 if ES == "Literate" else 1
+        SES_val = {"Lower": 3, "Middle": 2, "Upper": 1}[SES]
+        Parity_val = {"None": 1, "≤2": 2, "more than 2": 3}[Parity]
+        AgefirstP_val = 1 if AgefirstP == "≤20" else 2
+        MC_val = 1 if MC == "Regular" else 2
+        MH_val = 1 if MH == "Napkin" else 2
+        Contraception_val = 1 if Contraception == "Others" else 2
+        Smoking_val = 1 if Smoking == "Active" else 2
+        HRHPV_val = 2 if HRHPV == "Positive" else 1
+        IL6_val = {"AG": 1, "AA": 0, "GG": 2}[IL6]
+        IL1beta_val = {"TT": 2, "CT": 1, "CC": 0}[IL1beta]
+        TNFalpha_val = {"GG": 2, "AA": 0, "GA": 1}[TNFalpha]
         IL1RN_val = {
-            'I I': 1, 'II II': 2, 'I II': 3, 'I IV': 4, 'II III': 5, 'I III': 6, 'II IV': 7
+            'I I': 0, 'II II': 4, 'I II': 1, 'I IV': 3, 'II III': 5, 'I III': 2, 'II IV': 6
         }.get(IL1RN, 0)
 
         # Prediction input
@@ -100,7 +100,7 @@ with tab2:
 
         if gender_val == 1:
             st.warning("⚠️ This prediction tool is intended for biological females. Your result may be invalid.")
-        elif result[0] == 0:
+        elif result[0] == 1:
             st.error(f"🔬 {patient_display}, you may have a risk of Cervical Cancer.")
             st.markdown("**📍 Suggested Specialists:**")
             st.markdown("- 🔹 [Primary Care Provider](https://www.google.com/search?q=Primary+Care+Provider+near+me)")
