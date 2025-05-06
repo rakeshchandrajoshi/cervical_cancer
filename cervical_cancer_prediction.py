@@ -99,9 +99,6 @@ if submitted:
         st.success("✅ Prediction: You are unlikely to have Cervical Cancer. Stay healthy!")
         st.balloons()
 
-# Reference and Credits
-st.markdown("---")
-
 )
 
 
