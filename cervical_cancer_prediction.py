@@ -1,17 +1,11 @@
 import streamlit as st
-import pickle
+import joblib
 import numpy as np
 import os
 
-# Load model and encoders
-MODEL_PATH = "trained_model1.pkl"
-with open(MODEL_PATH, "rb") as f:
-    model_data = pickle.load(f)
-
-model = model_data["model"]
-label_encoders = model_data["label_encoders"]
-target_encoder = model_data.get("target_encoder")
-feature_columns = model_data["feature_columns"]
+# Load model
+MODEL_PATH = "cervicalcancer.pkl"
+model = joblib.load(MODEL_PATH)
 
 # Page configuration
 st.set_page_config(page_title="Cervical Cancer Predictor", page_icon="🏥", layout="wide")
@@ -74,22 +68,40 @@ with tab1:
 with tab2:
     if submitted:
         # Encode input
-        encoded_input = []
-        for feature in feature_columns:
-            value = st.session_state.get(feature)
-            if value in label_encoders.get(feature, {}):
-                encoded_input.append(label_encoders[feature].transform([value])[0])
-            else:
-                encoded_input.append(value)
+        gender_val = 1 if gender == "Male" else 0
+        PoR_val = 2 if PoR == "Urban" else 0
+        ES_val = 2 if ES == "Literate" else 1
+        SES_val = {"Lower": 3, "Middle": 2, "Upper": 1}[SES]
+        Parity_val = {"None": 1, "≤2": 2, "more_than_2": 3}[Parity]
+        AgefirstP_val = 1 if AgefirstP == "≤20" else 2
+        MC_val = 1 if MC == "Regular" else 2
+        MH_val = 1 if MH == "Napkin" else 2
+        Contraception_val = 1 if Contraception == "Others" else 2
+        Smoking_val = 1 if Smoking == "Active" else 2
+        HRHPV_val = 2 if HRHPV == "Positive" else 1
+        IL6_val = {"AG": 2, "AA": 1, "GG": 3}[IL6]
+        IL1beta_val = {"TT": 1, "CT": 2, "CC": 3}[IL1beta]
+        TNFalpha_val = {"GG": 1, "AA": 2, "GA": 3}[TNFalpha]
+        IL1RN_val = {
+            'I I': 1, 'II II': 2, 'I II': 3, 'I IV': 4, 'II III': 5, 'I III': 6, 'II IV': 7
+        }.get(IL1RN, 0)
 
         # Prediction input
-        input_data = np.array([encoded_input])
+        input_data = np.array([[
+            Age, PoR_val, ES_val, SES_val, Parity_val, AgefirstP_val, MC_val, MH_val,
+            Contraception_val, Smoking_val, HRHPV_val, IL6_val, IL1beta_val,
+            TNFalpha_val, IL1RN_val
+        ]])
+        print(input_data)
+
         result = model.predict(input_data)
 
         st.markdown("### 🧪 Prediction Result")
         patient_display = user_name.strip() if user_name else "Patient"
 
-        if result[0] == 1:
+        if gender_val == 1:
+            st.warning("⚠️ This prediction tool is intended for biological females. Your result may be invalid.")
+        elif result[0] == 1:
             st.error(f"🔬 {patient_display}, you may have a risk of Cervical Cancer.")
             st.markdown("**📍 Suggested Specialists:**")
             st.markdown("- 🔹 [Primary Care Provider](https://www.google.com/search?q=Primary+Care+Provider+near+me)")
